@@ -4,36 +4,35 @@ var express = require("express"),
     usersController = require("./controllers/usercontroller.js"),
     toDosController = require("./controllers/todoscontroller.js"),
     app = express();
+
+http.createServer(app).listen(3000);
 app.use(express.static(__dirname + "/client"));
 app.use('/', express.static(__dirname + "/client"));
 app.use('/user/:username', express.static(__dirname + "/client"));
 app.use(express.urlencoded({extended: true}));
-mongoose.connect('mongodb://localhost/amazeriffic2');
-http.createServer(app).listen(3000);
-app.get("/users.json", usersController.index);
-app.get("/users", usersController.create);
-app.get("/users/:username", usersController.show);
-app.get("/users/:username", usersController.update);
-app.get("/users/:username", usersController.destroy);
-app.get("/user/:username/todos.json", toDosController.index);
-app.post("/user/:username/todos", toDosController.create);
-app.put("/user/:username/todos/:id", toDosController.update);
-app.delete("/user/:username/todos/:id", toDosController.destroy);
-app.post("/todos", function(req, res){
-    console.log(req.body);
-    var newToDo = new ToDo({"description" : req.body.description,
-                            "tags" : req.body.tags});
-    newToDo.save(function (err, result) {
-        if (err !== null) {
-            console.log(err);
-            res.send("ERROR");
-        } else {
-            ToDo.find({}, function (err, result) {
-                if (err !== null) {
-                    res.send("ERROR");
-                }
-                res.json(result);
-            });
-        }
-    });
+mongoose.connect('mongodb://localhost/amazeriffic2', {
+    useNewUrlParser : true,
+    useCreateIndex : true,
+    useUnifiedTopology : true
+}).then(res => {
+    console.log("DB is connected");
+}).catch(err => {
+    console.log(Error, err.message);
 });
+
+app.get("/users.json", usersController.index);
+app.post("/users", usersController.create);
+app.get("/users/:username", usersController.show);
+app.put("/users/:username", usersController.update);
+app.delete("/users/:username", usersController.destroy);
+
+app.get("/user/:_id/todos.json", toDosController.index);
+app.post("/user/:_id/todos", toDosController.create);
+app.put("/user/:_id/todos/:id", toDosController.update);
+app.delete("/user/:_id/todos/:id", toDosController.destroy);
+
+app.get("/todos.json", toDosController.index);
+app.get("/todos/:id", toDosController.show); 
+app.post("/todos", toDosController.create);
+app.put("/todos/:id", toDosController.update);
+app.delete("/todos/:id", toDosController.destroy);

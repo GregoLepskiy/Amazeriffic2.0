@@ -1,6 +1,5 @@
-const User = require("../models/user.js");
-
 var ToDo = require("../models/todos.js"),
+    User = require("../models/user.js"),
     ToDosController = {};
 ToDosController.index = function (req, res) {
     var username = req.params.username || null,
