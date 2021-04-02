@@ -20,7 +20,7 @@ ToDosController.index = function (req, res) {
             } else if (result.length === 0) {
                 res.status(404).json({"result_length" : 0});
             } else {
-                respondWithToDos({"owner" : result[0].id});
+                respondWithToDos({"owner" : result[0]._id});
             }
         });
     } else {

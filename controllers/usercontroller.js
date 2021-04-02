@@ -51,9 +51,7 @@ UsersController.create = function (req, res) {
         } else if (result.length !== 0) {
             res.status(501).send("User is already consist");
         } else {
-            var newUser = new User({
-                "username" : username
-            });
+            var newUser = new User({"username" : username});
             newUser.save(function(err, result){
                 console.log(err);
                 if (err !== null) {
