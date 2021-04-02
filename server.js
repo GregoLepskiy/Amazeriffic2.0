@@ -25,6 +25,7 @@ app.post("/users", usersController.create);
 app.get("/users/:username", usersController.show);
 app.put("/users/:username", usersController.update);
 app.delete("/users/:username", usersController.destroy);
+app.get("/users/:username/users.json", usersController.index);
 
 app.get("/user/:username/todos.json", toDosController.index);
 app.post("/user/:username/todos", toDosController.create);
